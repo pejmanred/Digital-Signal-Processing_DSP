@@ -15,6 +15,7 @@ set(gca,'fontsize',9,'fontweight','bold');
 plot(t,xCount,'b','linewidth',2);
 plot(tSamp,xSamp,'ko','linewidth',2);
 
+%Catch if aliased frequency happening and at what frequency!
 if fs < 2 * fo
     contin=1;
     m=0;
