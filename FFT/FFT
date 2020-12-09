@@ -1,0 +1,52 @@
+close all;
+clear all;
+clc;
+
+Fs=1000;
+Ts=1/Fs;  %0.001
+SignalDuration= 0:Ts:2-Ts;
+
+f1=10;
+f2=30;
+f3=70;
+
+sig1=10*sin(2*pi*f1*SignalDuration);
+sig2=10*sin(2*pi*f2*SignalDuration);
+sig3=10*sin(2*pi*f3*SignalDuration);
+sigT=sig1 + sig2 + sig3;
+
+subplot(4,1,1);
+plot(SignalDuration,sig1);
+title("Freq="+ f1 + " Hz")
+subplot(4,1,2);
+plot(SignalDuration,sig2);
+title("Freq="+ f2 + " Hz")
+subplot(4,1,3);
+plot(SignalDuration,sig3);
+title("Freq="+ f3 + " Hz")
+subplot(4,1,4);
+plot(SignalDuration,sigT);
+title("sig1 + sig2 + sig3")
+
+
+num_fft=length(sigT);           % time domain signal length
+num_fft2= 2^nextpow2(num_fft);   %Length of the signal i power of 2
+
+ff=fft(sigT,num_fft2);          %FFT of signal fft(X,n)
+ffhalf=ff(1:num_fft2/2);        % Delete th mirror part/Negative Freq 
+
+ffhalf=ffhalf/max(ffhalf)       %Normalize the Amplitude
+xfft=Fs * (0:num_fft2/2-1)/num_fft;  % Adjust the Freq in x axis
+
+subplot(2,1,1)
+plot(SignalDuration,sigT);              %Plot the spectrum
+xlabel('Time (s)');
+ylabel('Amplitude');
+title('Time Domain')
+
+
+subplot(2,1,2)
+plot(xfft,abs(ffhalf));              %Plot the spectrum
+xlabel('Frequency (Hz)');
+ylabel('Normalized Amplitude');
+title('Frequency Domain')
