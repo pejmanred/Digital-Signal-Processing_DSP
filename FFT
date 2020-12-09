@@ -28,9 +28,25 @@ subplot(4,1,4);
 plot(SignalDuration,sigT);
 title("sig1 + sig2 + sig3")
 
-num_fft=length(sigT);    % time domain signal length
-num_fft2=2^nextpow2(num_fft);   %Length of the signal in power of 2
+
+num_fft=length(sigT);           % time domain signal length
+num_fft2= 2^nextpow2(num_fft);   %Length of the signal i power of 2
+
 ff=fft(sigT,num_fft2);          %FFT of signal fft(X,n)
 ffhalf=ff(1:num_fft2/2);        % Delete th mirror part/Negative Freq 
+
+ffhalf=ffhalf/max(ffhalf)       %Normalize the Amplitude
 xfft=Fs * (0:num_fft2/2-1)/num_fft;  % Adjust the Freq in x axis
+
+subplot(2,1,1)
+plot(SignalDuration,sigT);              %Plot the spectrum
+xlabel('Time (s)');
+ylabel('Amplitude');
+title('Time Domain')
+
+
+subplot(2,1,2)
 plot(xfft,abs(ffhalf));              %Plot the spectrum
+xlabel('Frequency (Hz)');
+ylabel('Normalized Amplitude');
+title('Frequency Domain')
