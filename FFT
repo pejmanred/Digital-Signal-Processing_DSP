@@ -4,7 +4,7 @@ clc;
 
 Fs=1000;
 Ts=1/Fs;  %0.001
-SignalDuration= 0:Ts:5-Ts;
+SignalDuration= 0:Ts:2-Ts;
 
 f1=10;
 f2=30;
@@ -13,7 +13,7 @@ f3=70;
 sig1=10*sin(2*pi*f1*SignalDuration);
 sig2=10*sin(2*pi*f2*SignalDuration);
 sig3=10*sin(2*pi*f3*SignalDuration);
-sigT=sig1 + sig2 .* sig3;
+sigT=sig1 + sig2 + sig3;
 
 subplot(4,1,1);
 plot(SignalDuration,sig1);
@@ -26,9 +26,11 @@ plot(SignalDuration,sig3);
 title("Freq="+ f3 + " Hz")
 subplot(4,1,4);
 plot(SignalDuration,sigT);
+title("sig1 + sig2 + sig3")
 
 num_fft=length(sigT);    % time domain signal length
-num_fft2=2^nextpow2(num_fft);   %Length of the signal i power of 2
+num_fft2=2^nextpow2(num_fft);   %Length of the signal in power of 2
 ff=fft(sigT,num_fft2);          %FFT of signal fft(X,n)
 ffhalf=ff(1:num_fft2/2);        % Delete th mirror part/Negative Freq 
-plot(abs(ffhalf));              %Plot the spectrum
+xfft=Fs * (0:num_fft2/2-1)/num_fft;  % Adjust the Freq in x axis
+plot(xfft,abs(ffhalf));              %Plot the spectrum
